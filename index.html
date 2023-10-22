@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poeskat Printer</title>
+    <link rel="stylesheet" href="./assets/stylesheet.css">
+</head>
+
+<body>
+    <div id="printer">
+        <img src="./assets/printer.png">
+    </div>
+
+    <script>
+        let musicPlayed = false;
+    
+        document.getElementById('printer').addEventListener('click', function () {
+            if (!musicPlayed) {
+                const music = new Audio('./assets/music.mp3');
+                music.loop = true;  
+                music.play();
+                musicPlayed = true; 
+            }
+    
+            const cat = document.createElement("img");
+            cat.src = "./assets/poeskat.gif";
+            cat.classList.add("moving-cat");
+            document.getElementById('printer').appendChild(cat);
+    
+            
+            cat.style.top = Math.random() * (window.innerHeight - cat.clientHeight) + 'px';
+            cat.style.left = Math.random() * (window.innerWidth - cat.clientWidth) + 'px';
+    
+
+            const randomFrame = Math.floor(Math.random() * 4);
+            cat.style.setProperty('--initial-frame', randomFrame);
+    
+
+            function animate() {
+                
+                const newTop = parseFloat(cat.style.top) + cat.dy;
+                const newLeft = parseFloat(cat.style.left) + cat.dx;
+    
+  
+                if (newTop <= 0 || newTop >= window.innerHeight - cat.clientHeight) {
+                    cat.dy = -cat.dy;
+                }
+    
+
+                if (newLeft <= 0 || newLeft >= window.innerWidth - cat.clientWidth) {
+                    cat.dx = -cat.dx;
+                }
+    
+
+                cat.style.top = newTop + 'px';
+                cat.style.left = newLeft + 'px';
+    
+
+                const currentFrame = parseFloat(cat.style.getPropertyValue('--initial-frame')) || 0;
+                cat.style.setProperty('--initial-frame', (currentFrame + 0.25) % 4); 
+    
+
+                requestAnimationFrame(animate);
+            }
+    
+
+            cat.dx = (Math.random() - 0.5) * 60;
+            cat.dy = (Math.random() - 0.5) * 60; 
+    
+            animate();
+        });
+    </script>
+    
+    
+    
+
+
+</body>
+
+</html>
